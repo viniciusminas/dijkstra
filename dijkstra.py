@@ -8,7 +8,7 @@ graph = {
     'Atalanta': {'Rio do Sul': 18, 'Ituporanga': 17, 'Agronômica': 12, 'Petrolandia': 18},
     'Imbuia': {'Petrolândia': 90, 'Chapadao do Lageado': 66, 'Ibirama': 178.2, 'Ituporanga': 99},
     'Chapadao do Lageado': {'Petrolândia': 110, 'Imbuia': 66, 'Presidente Nereu': 132},
-    'Aurora': {'Agronomica': 22, 'Ituporanga': 26.4}
+    'Aurora': {'Agronomica': 22, 'Ituporanga': 26.4},
     'Presidente Nereu': {'Chapadao do Lageado': 132, 'Ituporanga': 90},
     'Laurentino': {'Agronomica': 24, 'Dona Emma': 75, 'Rio do Sul': 30},
     'Trombudo Central': {'Agronômica': 84},

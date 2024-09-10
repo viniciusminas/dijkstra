@@ -1,38 +1,36 @@
 import heapq
 
+def djikstra(ori, dest, grafo):
+    fila = [(0, ori, [])]
+    vistos = set()
+    menor= {ori:0}
 
-def dijkstra(graph, start, goal):
-    # Fila de prioridade
-    queue = [(0, start, [])]
-    seen = set()
-    mins = {start: 0}
+    while fila:
+        (custo, vertice, caminho) = heapq.heappop(fila)
 
-    while queue:
-        (cost, node, path) = heapq.heappop(queue)
-
-        if node in seen:
+        if vertice in vistos:
             continue
 
-        path = path + [node]
-        seen.add(node)
+        caminho = caminho + [vertice]
+        vistos.add(vertice)
 
-        if node == goal:
-            return (cost, path)
+        if vertice == dest:
+            return(custo, caminho)
 
-        for next_node, weight in graph[node].items():
-            if next_node in seen:
+        if vertice not in grafo:
+            continue
+
+        for prox_vertice, distancia in grafo[vertice].items():
+            if prox_vertice in vistos:
                 continue
-            prev = mins.get(next_node, None)
-            next_cost = cost + weight
-            if prev is None or next_cost < prev:
-                mins[next_node] = next_cost
-                heapq.heappush(queue, (next_cost, next_node, path))
+            custo_previo = menor.get(prox_vertice, None)
+            #A variavel custo_prévio, armazena o custo que se tinha para chegar na cidade até então
+            prox_custo = custo + distancia
+            if custo_previo is None or prox_custo < custo_previo:
+                menor[prox_vertice] = prox_custo
+                heapq.heappush(fila, (prox_custo, prox_vertice, caminho))
 
-    return float("inf"), []
-
-
-# Exemplo de uso
-graph = {
+cidades = {
     'Rio do Sul': {'Ituporanga': 75, 'Petrolândia': 90, 'Atalanta': 18, 'Laurentino': 30, 'Agronômica': 66,
                    'Ibirama': 157.5},
     'Ituporanga': {'Rio do Sul': 75, 'Aurora': 26.4, 'Presidente Nereu': 90, 'Imbuia': 99, 'Atalanta': 17},
@@ -51,16 +49,26 @@ graph = {
     'Dona Emma': {'Laurentino': 75}
 }
 
-# Solicitar ao usuário para selecionar os pontos de partida e chegada
-start_city = input("Digite a cidade de partida: ")
-end_city = input("Digite a cidade de destino: ")
+while True:
+    origem = input('Origem: ')
+    destino = input('Destino: ')
 
-# Executar o algoritmo de Dijkstra
-cost, path = dijkstra(graph, start_city, end_city)
+    try:
+        custo_final, caminho_final = djikstra(origem, destino, cidades)
 
-# Exibir o resultado
-if cost < float("inf"):
-    print(
-        f"O caminho mais curto de {start_city} para {end_city} tem um custo de {cost} e passa por: {' -> '.join(path)}")
-else:
-    print(f"Não há caminho disponível de {start_city} para {end_city}.")
+        if custo_final < float("inf"):
+            print('O menor caminho entre a cidade {} e a cidade {} é: {}'.format(origem, destino, '-->'.join(caminho_final)))
+            print('Custo do caminho: {}'.format(custo_final))
+        else:
+            print('Não há nenhum caminho entre {} e {}'.format(origem, destino))
+    except:
+        print('Ocorreu um erro inesperado!')
+
+    print('--------------------------------------------------------------------------------------------------')
+
+    ctrl = input('Deseja continuar verificando rotas?[S/n]')
+
+    if ctrl != 'S' and ctrl != 's':
+        break
+
+

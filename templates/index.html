@@ -44,13 +44,27 @@
      <div id="map"></div>
 
 <script>
-    var map = L.map('map').setView([51.505, -0.09], 13);
+    var map = L.map('map').setView([-27.2156, -49.643], 13);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
+    function addPopUps(localizacoes){
+        for(let i = 0; i < localizacoes.length; i++){
+            let cidade = localizacoes[i]
+            let lat = cidade.lat;
+            let lon = cidade.lon;
+            let nome_cidade = cidade.nome;
+
+            L.marker([lat, lon]).addTo(map)
+                .bindPopup('Cidade: ' + nome_cidade)
+                .openPopup();
+        }
+    }
+
+    addPopUps(localizacoes);
 
 </script>
 </body>

@@ -55,26 +55,6 @@ cidades = {
     'Dona Emma': {'Laurentino': 75}
 }
 
-cidades_lat_lon = {
-    'Rio do Sul': {'lat': -27.2156, 'lon': -49.643, 'nome': 'Rio do Sul'},
-    'Ituporanga': {'lat': -27.4133, 'lon': -49.5967, 'nome': 'Ituporanga'},
-    'Ibirama': {'lat': -27.0544, 'lon': -49.5192, 'nome': 'Ibirama'},
-    'Petrolândia': {'lat': -27.5347, 'lon': -49.6964, 'nome': 'Petrolândia'},
-    'Agronômica': {'lat': -27.2667, 'lon': -49.7078, 'nome': 'Agronômica'},
-    'Atalanta': {'lat': -27.4211, 'lon': -49.7789, 'nome': 'Atalanta'},
-    'Imbuia': {'lat': -27.4903, 'lon': -49.4217, 'nome': 'Imbuia'},
-    'Chapadao do Lageado': {'lat': -27.5903, 'lon': -49.5517, 'nome': 'Chapadao do Lageado'},
-    'Aurora': {'lat': -27.3097, 'lon': -49.6297, 'nome': 'Aurora'},
-    'Presidente Nereu': {'lat': -27.2764, 'lon': -49.3875, 'nome': 'Presidente Nereu'},
-    'Laurentino': {'lat': -27.2175, 'lon': -49.7331, 'nome': 'Laurentino'},
-    'Trombudo Central': {'lat': -27.2975, 'lon': -49.7894, 'nome': 'Trombudo Central'},
-    'Presidente Getúlio': {'lat': -27.0478, 'lon': -49.6256, 'nome': 'Presidente Getúlio'},
-    'José Boiteux': {'lat': -26.9567, 'lon': -49.6283, 'nome': 'José Boiteux'},
-    'Dona Emma': {'lat': -26.9814, 'lon': -49.7222, 'nome': 'Dona Emma'}
-}
-
-
-
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
@@ -90,7 +70,7 @@ def home():
 
             if custo_final < float("inf"):
                 caminho_str = ' --> '.join(caminho_final)
-                return render_template('index.html',  caminho=caminho_str, custo=custo_final, localizacoes=caminho_map)
+                return render_template('index.html',  caminho=caminho_str, custo=custo_final)
             else:
                 return render_template('index.html', caminho="Nenhum caminho encontrado", custo="Indisponível")
         except:

@@ -9,126 +9,67 @@
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
 
      <style>
-        #map {
-        height: 400px;
-        width: 100%;
-        margin: 20px auto;
-        }
-
-         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-         }
-
-         h1 {
-            text-align: center;
-            color: #333;
-            margin-top: 30px;
-         }
-
-         form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-         }
-
-         label {
-            font-weight: bold;
-            margin-bottom: 5px;
-         }
-
-         input {
-            padding: 10px;
-            margin-bottom: 20px;
-            width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-         }
-
-         button {
-            background-color: #4a90e2;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-         }
-
-         button:hover {
-            background-color: #357ABD;
-         }
-
          #map {
             height: 600px;
-            width: 80%;
-            margin: 0 auto;
-            margin-top: 40px;
-         }
-
-         .result {
-            text-align: center;
-            font-size: 1.2em;
-            color: #555;
-            margin-top: 20px;
+            width: 600px;
          }
      </style>
+
 </head>
 <body>
-    <h1>Rota Dijkstra</h1>
+
+    <h1>Menor Caminho entre Cidades</h1>
 
     <form method="POST" action="/">
         <label for="origem">Origem:</label>
-        <input type="text" id="origem" name="origem" placeholder="Digite a cidade de origem" required>
+        <input type="text" id="origem" name="origem" required><br><br>
 
         <label for="destino">Destino:</label>
-        <input type="text" id="destino" name="destino" placeholder="Digite a cidade de destino" required>
+        <input type="text" id="destino" name="destino" required><br><br>
 
         <button type="submit">Calcular</button>
     </form>
 
-    <div class="result">
-        {% if caminho %}
-            <h2>Resultado:</h2>
-            <p>O menor caminho é: {{ caminho }}</p>
-            <p>Custo do caminho: {{ custo }}</p>
-        {% endif %}
-    </div>
+    {% if caminho %}
+        <h2>Resultado:</h2>
+        <p>O menor caminho é: {{ caminho }}</p>
+        <p>Custo do caminho: {{ custo }}</p>
+    {% endif %}
 
-    <div id="map"></div>
+     <div id="map"></div>
 
 <script>
-var map = L.map('map').setView([-27.2156, -49.643], 12);
+    var map = L.map('map').setView([-27.2156, -49.643], 13);
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+    }).addTo(map);
 
-function addPopUps(localizacoes){
-    for(let i = 0; i < localizacoes.length; i++){
-        let cidade = localizacoes[i];
-        let lat = cidade.lat;
-        let lon = cidade.lon;
-        let nome_cidade = cidade.nome;
+    var coordenadas = {
+    'Rio do Sul': {'lat': -27.2156, 'lon': -49.643},
+    'Ituporanga': {'lat': -27.4133, 'lon': -49.5967},
+    'Ibirama': {'lat': -27.0544, 'lon': -49.5192},
+    'Petrolândia': {'lat': -27.5347, 'lon': -49.6964},
+    'Agronômica': {'lat': -27.2667, 'lon': -49.7078},
+    'Atalanta': {'lat': -27.4211, 'lon': -49.7789},
+    'Imbuia': {'lat': -27.4903, 'lon': -49.4217},
+    'Chapadao do Lageado': {'lat': -27.5903, 'lon': -49.5517},
+    'Aurora': {'lat': -27.3097, 'lon': -49.6297},
+    'Presidente Nereu': {'lat': -27.2764, 'lon': -49.3875},
+    'Laurentino': {'lat': -27.2175, 'lon': -49.7331},
+    'Trombudo Central': {'lat': -27.2975, 'lon': -49.7894},
+    'Presidente Getúlio': {'lat': -27.0478, 'lon': -49.6256},
+    'José Boiteux': {'lat': -26.9567, 'lon': -49.6283},
+    'Dona Emma': {'lat': -26.9814, 'lon': -49.7222}
+};
 
-        L.marker([lat, lon]).addTo(map)
-            .bindPopup('Cidade: ' + nome_cidade)
-            .openPopup();
-    }
-}
 
-addPopUps(localizacoes);
 
 </script>
 </body>

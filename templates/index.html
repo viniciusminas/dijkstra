@@ -91,24 +91,27 @@
 
     <form method="POST" action="/">
         <label for="origem">Origem:</label>
-        <input type="text" id="origem" name="origem" required><br><br>
+        <input type="text" id="origem" name="origem" placeholder="Digite a cidade de origem" required><br><br>
 
         <label for="destino">Destino:</label>
-        <input type="text" id="destino" name="destino" required><br><br>
+        <input type="text" id="destino" name="destino" placeholder="Digite a cidade de destino" required><br><br>
 
+        <button type = "submit">Calcular</button>
+        
         <button type="submit" onclick="addPopUps(caminho)">Calcular</button>
     </form>
 
+    <div class="result">
     {% if caminho %}
         <h2>Resultado:</h2>
         <p>O menor caminho é: {{ caminho }}</p>
         <p>Custo do caminho: {{ custo }}</p>
     {% endif %}
-
+    </div>
      <div id="map"></div>
 
 <script>
-    var map = L.map('map').setView([-27.2156, -49.643], 13);
+    var map = L.map('map').setView([-27.2156, -49.643], 12);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,

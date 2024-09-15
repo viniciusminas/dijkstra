@@ -3,7 +3,7 @@ import heapq
 
 app = Flask(__name__)
 
-
+# Função Dijkstra para encontrar o menor caminho
 def djikstra(ori, dest, grafo):
     fila = [(0, ori, [])]
     vistos = set()
@@ -35,10 +35,28 @@ def djikstra(ori, dest, grafo):
 
     return (float('inf'), [])
 
+# Dicionário com as cidades e suas coordenadas
+coordenadas_cidades = {
+    'Rio do Sul': {'lat': -27.2156, 'lon': -49.643},
+    'Ituporanga': {'lat': -27.4133, 'lon': -49.5967},
+    'Ibirama': {'lat': -27.0544, 'lon': -49.5192},
+    'Petrolândia': {'lat': -27.5347, 'lon': -49.6964},
+    'Agronômica': {'lat': -27.2667, 'lon': -49.7078},
+    'Atalanta': {'lat': -27.4211, 'lon': -49.7789},
+    'Imbuia': {'lat': -27.4903, 'lon': -49.4217},
+    'Chapadao do Lageado': {'lat': -27.5903, 'lon': -49.5517},
+    'Aurora': {'lat': -27.3097, 'lon': -49.6297},
+    'Presidente Nereu': {'lat': -27.2764, 'lon': -49.3875},
+    'Laurentino': {'lat': -27.2175, 'lon': -49.7331},
+    'Trombudo Central': {'lat': -27.2975, 'lon': -49.7894},
+    'Presidente Getúlio': {'lat': -27.0478, 'lon': -49.6256},
+    'José Boiteux': {'lat': -26.9567, 'lon': -49.6283},
+    'Dona Emma': {'lat': -26.9814, 'lon': -49.7222}
+}
 
+# Dicionário do grafo com as distâncias entre cidades
 cidades = {
-    'Rio do Sul': {'Ituporanga': 75, 'Petrolândia': 90, 'Atalanta': 18, 'Laurentino': 30, 'Agronômica': 66,
-                   'Ibirama': 157.5},
+    'Rio do Sul': {'Ituporanga': 75, 'Petrolândia': 90, 'Atalanta': 18, 'Laurentino': 30, 'Agronômica': 66, 'Ibirama': 157.5},
     'Ituporanga': {'Rio do Sul': 75, 'Aurora': 26.4, 'Presidente Nereu': 90, 'Imbuia': 99, 'Atalanta': 17},
     'Ibirama': {'Imbuia': 178.2, 'Presidente Getúlio': 30, 'Rio do Sul': 157.5},
     'Petrolândia': {'Rio do Sul': 90, 'Atalanta': 18, 'Chapadao do Lageado': 110, 'Imbuia': 90},
@@ -60,18 +78,26 @@ def home():
     if request.method == 'POST':
         origem = request.form['origem']
         destino = request.form['destino']
-        caminho_map = []
 
         try:
+            # Chamando a função Dijkstra para obter o custo e o caminho
             custo_final, caminho_final = djikstra(origem, destino, cidades)
 
             if custo_final < float("inf"):
+                # Montar o caminho como string para exibição
                 caminho_str = ' --> '.join(caminho_final)
-                return render_template('index.html',  caminho=caminho_str, custo=custo_final)
+
+                # Montar uma lista com as coordenadas das cidades no caminho
+                caminho_map = [{'nome': cidade, 'lat': coordenadas_cidades[cidade]['lat'], 'lon': coordenadas_cidades[cidade]['lon']}
+                               for cidade in caminho_final]
+
+                # Passar o caminho com coordenadas para o frontend
+                return render_template('index.html', caminho=caminho_map, custo=custo_final, caminho_str=caminho_str)
             else:
-                return render_template('index.html', caminho="Nenhum caminho encontrado", custo="Indisponível")
-        except:
-            return render_template('index.html', caminho="Erro ao calcular a rota", custo="Indisponível")
+                return render_template('index.html', caminho=None, custo="Indisponível", caminho_str="Nenhum caminho encontrado")
+        except Exception as e:
+            print(e)  # Para depuração
+            return render_template('index.html', caminho=None, custo="Indisponível", caminho_str="Erro ao calcular a rota")
 
     return render_template('index.html', caminho=None)
 

@@ -9,14 +9,78 @@
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
 
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
 
-     <style>
+    <style>
+        #map {
+        height: 400px;
+        width: 100%;
+        margin: 20px auto;
+        }
+
+         body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+         }
+
+         h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 30px;
+         }
+
+         form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+         }
+
+         label {
+            font-weight: bold;
+            margin-bottom: 5px;
+         }
+
+         input {
+            padding: 10px;
+            margin-bottom: 20px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+         }
+
+         button {
+            background-color: #4a90e2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+         }
+
+         button:hover {
+            background-color: #357ABD;
+         }
+
          #map {
             height: 600px;
-            width: 600px;
+            width: 80%;
+            margin: 0 auto;
+            margin-top: 40px;
+         }
+
+         .result {
+            text-align: center;
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 20px;
          }
      </style>
 

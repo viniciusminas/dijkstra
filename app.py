@@ -65,9 +65,6 @@ def home():
         try:
             custo_final, caminho_final = djikstra(origem, destino, cidades)
 
-            for cidade in caminho_final:
-                caminho_map.append(cidades_lat_lon[cidade])
-
             if custo_final < float("inf"):
                 caminho_str = ' --> '.join(caminho_final)
                 return render_template('index.html',  caminho=caminho_str, custo=custo_final)

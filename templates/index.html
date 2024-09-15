@@ -32,7 +32,7 @@
         <label for="destino">Destino:</label>
         <input type="text" id="destino" name="destino" required><br><br>
 
-        <button type="submit">Calcular</button>
+        <button type="submit" onclick="addPopUps(caminho)">Calcular</button>
     </form>
 
     {% if caminho %}
@@ -68,8 +68,19 @@
     'José Boiteux': {'lat': -26.9567, 'lon': -49.6283},
     'Dona Emma': {'lat': -26.9814, 'lon': -49.7222}
 };
+    i = 0
+    function addPopUps(caminho_pop){
+        caminho_pop.forEach(element => {
+            i += 5
+            let lat = -27.0544 + i
+            let lon = -49.5192 + i
+            L.marker([lat, lon]).addTo(map)
+                .bindPopUp(element)
+                .addPopUp()
+        });
+    }
 
-
+    addPopUps(caminho)
 
 </script>
 </body>

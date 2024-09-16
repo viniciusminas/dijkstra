@@ -109,7 +109,7 @@
     <div id="map"></div>
 
 <script>
-    // Inicializando o mapa
+
     var map = L.map('map').setView([-27.2156, -49.643], 12);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -120,20 +120,31 @@
 
     function addPopUps(caminho_pop){
         for (var i = 0; i < caminho_pop.length; i++) {
-            var cidade = caminho_pop[i].nome;
-            var lat = caminho_pop[i].lat;
-            var lon = caminho_pop[i].lon;
+            let cidade = caminho_pop[i].nome;
+            let lat = caminho_pop[i].lat;
+            let lon = caminho_pop[i].lon;
 
-            // Adicionando o marcador no mapa
             L.marker([lat, lon]).addTo(map)
                 .bindPopup('Cidade: ' + cidade)
                 .openPopup();
         }
     }
 
+    function addPaths(caminho_path){
+        var coordenadas = [];
+        for (var i = 0; i < caminho_path.length; i++) {
+            coordenadas.push([caminho_path[i].lat, caminho_path[i].lon]);
+        }
+
+        L.polyline(coordenadas, {color: 'blue'}).addTo(map);
+
+        map.fitBounds(L.polyline(coordenadas).getBounds());
+    }
+
     var caminho = {{ caminho | tojson }};
 
     addPopUps(caminho);
+    addPaths(caminho);
 
 </script>
 

@@ -5,132 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Algoritmo de Dijkstra</title>
 
-     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
-     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-    <style>
-        #map {
-        height: 400px;
-        width: 100%;
-        margin: 20px auto;
-        }
-
-         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-         }
-
-         h1 {
-            text-align: center;
-            color: #333;
-            margin-top: 30px;
-         }
-
-         form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-         }
-
-         label {
-            font-weight: bold;
-            margin-bottom: 5px;
-         }
-
-         input {
-            padding: 10px;
-            margin-bottom: 20px;
-            width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-         }
-
-         button {
-            background-color: #4a90e2;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-         }
-
-         button:hover {
-            background-color: #357ABD;
-         }
-
-         #map {
-            height: 600px;
-            width: 80%;
-            margin: 0 auto;
-            margin-top: 40px;
-         }
-
-         .result {
-            text-align: center;
-            font-size: 1.2em;
-            color: #555;
-            margin-top: 20px;
-         }
-     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>
 <body>
 
-    <h1>Menor Caminho entre Cidades</h1>
+    <h1>Rota Dijkstra</h1>
 
-    <form method="POST" action="/">
-        <label for="origem">Origem:</label>
-        <input type="text" id="origem" name="origem" placeholder="Digite a cidade de origem" required><br><br>
+    <div class="container form-container">
+        <form method="POST" action="/" class="form-group">
+            <div class="form-group">
+                <label for="origem">Origem:</label>
+                <input type="text" id="origem" name="origem" class="form-control" placeholder="Digite a cidade de origem" required>
+            </div>
 
-        <label for="destino">Destino:</label>
-        <input type="text" id="destino" name="destino" placeholder="Digite a cidade de destino" required><br><br>
+            <div class="form-group">
+                <label for="destino">Destino:</label>
+                <input type="text" id="destino" name="destino" class="form-control" placeholder="Digite a cidade de destino" required>
+            </div>
 
-        <button type="submit">Calcular</button>
-    </form>
-
-    <div class="result">
-    {% if caminho %}
-        <h2>Resultado:</h2>
-        <p>O menor caminho é: {{ caminho_str }}</p>
-        <p>Custo do caminho: {{ custo }}</p>
-    {% endif %}
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg">Calcular</button>
+            </div>
+        </form>
     </div>
+
+    <div class="container result">
+        {% if caminho %}
+            <h2>Resultado:</h2>
+            <p>O menor caminho é: {{ caminho_str }}</p>
+            <p>Custo do caminho: {{ custo }}</p>
+        {% endif %}
+    </div>
+
     <div id="map"></div>
 
-<script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-    var map = L.map('map').setView([-27.2156, -49.643], 12);
-
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
+    <!--<script src="{{ url_for('static', filename='js/script.js') }}"></script>-->
 
 
-    function addPopUps(caminho_pop){
-        for (var i = 0; i < caminho_pop.length; i++) {
-            let cidade = caminho_pop[i].nome;
-            let lat = caminho_pop[i].lat;
-            let lon = caminho_pop[i].lon;
+    <script>
+        var map = L.map('map').setView([-27.2156, -49.643], 12);
 
-            L.marker([lat, lon]).addTo(map)
-                .bindPopup('Cidade: ' + cidade)
-                .openPopup();
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+            function addPopUps(caminho_pop){
+            for (var i = 0; i < caminho_pop.length; i++) {
+                let cidade = caminho_pop[i].nome;
+                let lat = caminho_pop[i].lat;
+                let lon = caminho_pop[i].lon;
+
+                L.marker([lat, lon]).addTo(map)
+                    .bindPopup('Cidade: ' + cidade)
+                    .openPopup();
+            }
         }
-    }
 
-    function addPaths(caminho_path){
+        function addPaths(caminho_path){
         var coordenadas = [];
         for (var i = 0; i < caminho_path.length; i++) {
             coordenadas.push([caminho_path[i].lat, caminho_path[i].lon]);
@@ -141,12 +84,19 @@
         map.fitBounds(L.polyline(coordenadas).getBounds());
     }
 
-    var caminho = {{ caminho | tojson }};
+        var caminho = {{ caminho | tojson }};
 
-    addPopUps(caminho);
-    addPaths(caminho);
 
-</script>
+         addPopUps(caminho);
+         addPaths(caminho);
+
+
+
+    </script>
+
+    <div class="footer">
+        <p>Projeto Universitário - Algoritmo de Dijkstra © 2024</p>
+    </div>
 
 </body>
 </html>

@@ -91,7 +91,7 @@ def home():
 
             if custo_final < float("inf"):
                 caminho_str = ' --> '.join(caminho_final)
-                return render_template('index.html',  caminho=caminho_str, custo=custo_final, localizacoes=caminho_map)
+                return render_template('index.html',  caminho=caminho_map, custo=custo_final, caminho_str=caminho_str)
             else:
                 return render_template('index.html', caminho="Nenhum caminho encontrado", custo="Indisponível")
         except:

@@ -1,3 +1,4 @@
+#Academicos: Vinícius Antonio Minas e Pedro Henrique Scheidt
 from flask import Flask, render_template, request
 import heapq
 
